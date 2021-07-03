@@ -32,7 +32,7 @@
           </div>
         </td>
         <td><a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a></td>
-        <td><form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
+        <td><form th:method="DELETE" th:action="@{/admin/{id}/delete(id=${user.getId()})}">
           <input type="submit" value="Delete"/>
         </form></td>
       </tr>

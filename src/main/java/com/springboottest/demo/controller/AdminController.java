@@ -27,6 +27,8 @@ public class AdminController {
     @Autowired
     private RoleDao roleRepository;
 
+
+
     @GetMapping()
     public String getAllUsers(Model model){
         model.addAttribute("getAllUsers", userService.getAllUsers());
@@ -63,7 +65,7 @@ public class AdminController {
         return "testEdit";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") Long id,
                          @RequestParam(value = "rolesId") List<String> roles) {
@@ -81,7 +83,7 @@ public class AdminController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
         userService.removeUserById(id);
         return "redirect:/admin";
