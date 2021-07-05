@@ -22,6 +22,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "age")
+    private Integer age;
+
     @Column(name = "email")
     private String email;
 
@@ -37,10 +40,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
+    public User(Long id, String firstName, String lastName, Integer age, String email, String password, Set<Role> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -68,6 +72,14 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getEmail() {

@@ -24,6 +24,6 @@ public class UserController {
     @GetMapping()
     public String showProfile(Model model, Authentication aut) {
         model.addAttribute("user", userService.getUserByName(aut.getName()));
-        return "user";
+        return "demoUser";
     }
 }

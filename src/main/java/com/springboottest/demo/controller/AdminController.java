@@ -8,6 +8,7 @@ import com.springboottest.demo.repository.RoleDao;
 import com.springboottest.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,11 @@ public class AdminController {
 
 
     @GetMapping()
-    public String getAllUsers(Model model){
+    public String getAllUsers(Model model, Authentication aut){
+        model.addAttribute("userAuth", userService.getUserByName(aut.getName()));
         model.addAttribute("getAllUsers", userService.getAllUsers());
-        return "testIndex";
+
+        return "demoIndex";
     }
 
     @GetMapping("/new")
@@ -59,13 +62,13 @@ public class AdminController {
 
 
 
-    @GetMapping("/{id}/edit")
-    public String editUser(@PathVariable Long id, Model model){
+    @GetMapping("/update")
+    @ResponseBody
+    public void editUser(@PathVariable Long id, Model model){
         model.addAttribute("user", userService.getUserById(id));
-        return "testEdit";
     }
 
-    @PostMapping("/{id}")
+    @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") Long id,
                          @RequestParam(value = "rolesId") List<String> roles) {
@@ -83,7 +86,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
         userService.removeUserById(id);
         return "redirect:/admin";
