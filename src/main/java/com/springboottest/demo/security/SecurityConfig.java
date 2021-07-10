@@ -15,7 +15,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final UserServiceImp userDetailsService;
     private final SuccessUserHandler successUserHandler;
 
@@ -27,13 +26,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.formLogin()
+                // указываем страницу с формой логина
+                .loginPage("/login")
+                //указываем логику обработки при логине
+                .successHandler(new SuccessUserHandler())
+                // указываем action с формы логина
+                .loginProcessingUrl("/login")
+                // Указываем параметры логина и пароля с формы логина
+                .usernameParameter("j_email")
+                .passwordParameter("j_password")
+                // даем доступ к форме логина всем
+                .permitAll();
 
-
-        http.
-                authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").authenticated()
+        http.authorizeRequests()
+                .antMatchers("/**").authenticated()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .and().formLogin()
                 .successHandler(successUserHandler);
 
@@ -51,5 +59,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+        }
 }

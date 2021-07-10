@@ -6,24 +6,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 
 
 @Controller
-@RequestMapping("/user")
+
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public String showProfile(Model model, Authentication aut) {
-        model.addAttribute("user", userService.getUserByName(aut.getName()));
-        return "demoUser";
+    @GetMapping("/user")
+    public String show(Model model, Authentication aut) {
+        model.addAttribute("user", userService.getUserByEmail(aut.getName()));
+        return "newUserDemo";
     }
 }
